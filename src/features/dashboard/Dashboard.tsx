@@ -25,7 +25,7 @@ const Dashboard: React.FC = () => {
           }}
         >
           <Box>
-            <WelcomeCard username={auth.currentUser?.username || null} />
+            <WelcomeCard username={auth.currentUser?.username ?? null} />
           </Box>
         </Paper>
 

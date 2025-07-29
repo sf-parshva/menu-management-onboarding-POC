@@ -49,7 +49,7 @@ const CategoryDialog: React.FC<CategoryDialogProps> = ({
           fullWidth
           autoFocus
           margin="normal"
-          inputProps={{ maxLength: 32 }}
+          slotProps={{ input: { size: 'medium' } }}
         />
       </DialogContent>
       <DialogActions>

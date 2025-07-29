@@ -37,7 +37,8 @@
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "serve": "serve -s build"
+    "serve": "serve -s build",
+    "sonar": "sonar-scanner"
   },
   "browserslist": {
     "production": [

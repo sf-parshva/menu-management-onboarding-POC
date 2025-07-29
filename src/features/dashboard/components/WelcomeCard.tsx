@@ -32,7 +32,7 @@ const WelcomeCard: React.FC<WelcomeCardProps> = ({ username }) => {
             color: 'text.primary',
           }}
         >
-          Hello, {username || 'Admin'}!
+          Hello, {username ?? 'Admin'}!
         </Typography>
       </Box>
     </Stack>

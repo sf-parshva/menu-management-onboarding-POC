@@ -89,12 +89,13 @@ const MenuPage: React.FC = () => {
   }, []);
 
   const handleImageChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
+    const file = e.target.files?.[0];
+    if (file) {
       const reader = new FileReader();
       reader.onload = (ev) => {
         setForm((prev) => ({ ...prev, image: ev.target?.result as string }));
       };
-      reader.readAsDataURL(e.target.files[0]);
+      reader.readAsDataURL(file);
     }
   }, []);
 
@@ -104,9 +105,9 @@ const MenuPage: React.FC = () => {
       setSubmitAttempted(true);
       const item: MenuItemType = {
         ...form,
-        id: editId || uuidv4(),
+        id: editId ?? uuidv4(),
         price: Number(form.price),
-        ingredients: form.ingredients || [],
+        ingredients: form.ingredients ?? [],
       };
       if (Object.keys(errors).length > 0) return;
       if (editId) {

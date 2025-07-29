@@ -9,7 +9,7 @@ const InputField: React.FC<InputFieldProps> = ({ errorText, helperText, ...props
   <TextField
     {...props}
     error={!!errorText}
-    helperText={errorText || helperText}
+    helperText={errorText ?? helperText}
     fullWidth
     margin="normal"
     sx={{

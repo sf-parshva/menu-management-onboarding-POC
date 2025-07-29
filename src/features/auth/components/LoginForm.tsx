@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Typography, Button, Box, Stack, Divider, Alert } from '@mui/material';
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import { Box, Stack, Alert } from '@mui/material';
 import InputField from '../../../components/InputField';
+import AuthHeader from './AuthHeader';
+import AuthButton from './AuthButton';
+import AuthFooter from './AuthFooter';
+import { validateAuth } from '../validation/validateAuth';
 
 interface LoginFormProps {
   onSubmit: (form: { username: string; password: string }) => void;
@@ -16,13 +19,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, loading, error, onNavig
   const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
 
   const validate = (values = form) => {
-    const newErrors: typeof errors = {};
-    if (!values.username || values.username.trim().length < 3) {
-      newErrors.username = 'Username is required (min 3 characters)';
-    }
-    if (!values.password || values.password.length < 6) {
-      newErrors.password = 'Password is required (min 6 characters)';
-    }
+    const newErrors = validateAuth(values);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -49,39 +46,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, loading, error, onNavig
 
   return (
     <Box sx={{ textAlign: 'center' }}>
-      {/* Logo and Title */}
-      <Box sx={{ mb: 4 }}>
-        <Box
-          sx={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 64,
-            height: 64,
-            borderRadius: 2,
-            bgcolor: 'primary.main',
-            color: 'primary.contrastText',
-            mb: 2,
-          }}
-        >
-          <RestaurantMenuIcon sx={{ fontSize: 32 }} />
-        </Box>
-        <Typography variant="h4" fontWeight={700} gutterBottom>
-          Welcome Back
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Sign in to your Food Menu Admin account
-        </Typography>
-      </Box>
+      <AuthHeader title="Welcome Back" subtitle="Sign in to your Food Menu Admin account" />
 
-      {/* Error Alert */}
       {error && (
         <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>
           {error}
         </Alert>
       )}
 
-      {/* Login Form */}
       <Box component="form" onSubmit={handleSubmit} noValidate>
         <Stack spacing={3}>
           <InputField
@@ -105,49 +77,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, loading, error, onNavig
             required
             fullWidth
           />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            size="large"
-            disabled={!!errors.username || !!errors.password || loading}
-            sx={{
-              py: 1.5,
-              fontSize: '1rem',
-              fontWeight: 600,
-              borderRadius: 2,
-              textTransform: 'none',
-            }}
-          >
+          <AuthButton type="submit" disabled={!!errors.username || !!errors.password || loading}>
             {loading ? 'Signing In...' : 'Sign In'}
-          </Button>
+          </AuthButton>
         </Stack>
       </Box>
 
-      {/* Divider */}
-      <Divider sx={{ my: 3 }}>
-        <Typography variant="body2" color="text.secondary">
-          or
-        </Typography>
-      </Divider>
-
-      {/* Register Link */}
-      <Button
-        variant="outlined"
-        color="primary"
-        fullWidth
-        size="large"
-        onClick={onNavigateRegister}
-        sx={{ py: 1.5, fontSize: '1rem', fontWeight: 600, borderRadius: 2, textTransform: 'none' }}
-      >
-        Create New Account
-      </Button>
-
-      {/* Footer */}
-      <Typography variant="caption" color="text.secondary" sx={{ mt: 3, display: 'block' }}>
-        By signing in, you agree to our Terms of Service and Privacy Policy
-      </Typography>
+      <AuthFooter
+        dividerText="or"
+        buttonText="Create New Account"
+        onButtonClick={onNavigateRegister}
+        termsText="By signing in, you agree to our Terms of Service and Privacy Policy"
+      />
     </Box>
   );
 };

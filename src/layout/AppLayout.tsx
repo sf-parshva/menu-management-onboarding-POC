@@ -116,7 +116,10 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               onClick={isMobile ? handleDrawerToggle : undefined}
             >
               <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} primaryTypographyProps={{ fontWeight: 500 }} />
+              <ListItemText
+                primary={item.text}
+                slotProps={{ primary: { sx: { fontWeight: 500 } } }}
+              />
             </ListItemButton>
           ))}
         </List>
@@ -156,7 +159,7 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </Avatar>
           <Box sx={{ flexGrow: 1, minWidth: 0 }}>
             <Typography variant="subtitle2" sx={{ fontWeight: 600, color: 'text.primary' }}>
-              {auth.currentUser?.username || 'Admin User'}
+              {auth.currentUser?.username ?? 'Admin User'}
             </Typography>
             <Typography variant="caption" sx={{ color: 'text.secondary' }}>
               Administrator

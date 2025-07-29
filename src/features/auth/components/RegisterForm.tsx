@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Typography, Button, Box, Stack, Divider, Alert } from '@mui/material';
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import { Box, Stack, Alert } from '@mui/material';
 import InputField from '../../../components/InputField';
+import AuthHeader from './AuthHeader';
+import AuthButton from './AuthButton';
+import AuthFooter from './AuthFooter';
+import { validateRegister } from '../validation/validateAuth';
 
 interface RegisterFormProps {
   onSubmit: (form: { username: string; password: string }) => void;
@@ -29,16 +32,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   }>({});
 
   const validate = (values = form) => {
-    const newErrors: typeof errors = {};
-    if (!values.username || values.username.trim().length < 3) {
-      newErrors.username = 'Username is required (min 3 characters)';
-    }
-    if (!values.password || values.password.length < 6) {
-      newErrors.password = 'Password is required (min 6 characters)';
-    }
-    if (values.password !== values.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
+    const newErrors = validateRegister(values);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -65,29 +59,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
 
   return (
     <Box sx={{ textAlign: 'center' }}>
-      <Box sx={{ mb: 4 }}>
-        <Box
-          sx={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 64,
-            height: 64,
-            borderRadius: 2,
-            bgcolor: 'primary.main',
-            color: 'primary.contrastText',
-            mb: 2,
-          }}
-        >
-          <RestaurantMenuIcon sx={{ fontSize: 32 }} />
-        </Box>
-        <Typography variant="h4" fontWeight={700} gutterBottom>
-          Create Account
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Join Food Menu Admin to manage your restaurant
-        </Typography>
-      </Box>
+      <AuthHeader
+        title="Create Account"
+        subtitle="Join Food Menu Admin to manage your restaurant"
+      />
 
       {error && (
         <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>
@@ -130,46 +105,21 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             fullWidth
           />
 
-          <Button
+          <AuthButton
             type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            size="large"
             disabled={!!errors.username || !!errors.password || !!errors.confirmPassword || loading}
-            sx={{
-              py: 1.5,
-              fontSize: '1rem',
-              fontWeight: 600,
-              borderRadius: 2,
-              textTransform: 'none',
-            }}
           >
             {loading ? 'Creating Account...' : 'Create Account'}
-          </Button>
+          </AuthButton>
         </Stack>
       </Box>
 
-      <Divider sx={{ my: 3 }}>
-        <Typography variant="body2" color="text.secondary">
-          or
-        </Typography>
-      </Divider>
-
-      <Button
-        variant="outlined"
-        color="primary"
-        fullWidth
-        size="large"
-        onClick={onNavigateLogin}
-        sx={{ py: 1.5, fontSize: '1rem', fontWeight: 600, borderRadius: 2, textTransform: 'none' }}
-      >
-        Sign In to Existing Account
-      </Button>
-
-      <Typography variant="caption" color="text.secondary" sx={{ mt: 3, display: 'block' }}>
-        By creating an account, you agree to our Terms of Service and Privacy Policy
-      </Typography>
+      <AuthFooter
+        dividerText="or"
+        buttonText="Sign In to Existing Account"
+        onButtonClick={onNavigateLogin}
+        termsText="By creating an account, you agree to our Terms of Service and Privacy Policy"
+      />
     </Box>
   );
 };

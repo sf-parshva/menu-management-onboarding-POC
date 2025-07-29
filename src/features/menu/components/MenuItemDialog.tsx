@@ -84,7 +84,7 @@ const MenuItemDialog: React.FC<MenuItemDialogProps> = ({
           <TextField
             label="Description"
             name="description"
-            value={form.description || ''}
+            value={form.description ?? 0}
             onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
             onBlur={() =>
               setTouched((prev: Record<string, boolean>) => ({ ...prev, description: true }))
@@ -106,7 +106,6 @@ const MenuItemDialog: React.FC<MenuItemDialogProps> = ({
             margin="normal"
             error={showError('price')}
             helperText={getHelperText('price')}
-            inputProps={{ min: 0 }}
             required
           />
           <TextField
@@ -123,7 +122,7 @@ const MenuItemDialog: React.FC<MenuItemDialogProps> = ({
                 if (!form.ingredients?.includes(ingredientInput.trim())) {
                   setForm((prev) => ({
                     ...prev,
-                    ingredients: [...(prev.ingredients || []), ingredientInput.trim()],
+                    ingredients: [...(prev.ingredients ?? []), ingredientInput.trim()],
                   }));
                   setIngredientInput('');
                   setTouched((prev: Record<string, boolean>) => ({ ...prev, ingredients: true }));
@@ -134,45 +133,47 @@ const MenuItemDialog: React.FC<MenuItemDialogProps> = ({
             margin="normal"
             error={showError('ingredients')}
             helperText={getHelperText('ingredients') || 'Press Enter to add each ingredient'}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Button
-                    size="small"
-                    onClick={() => {
-                      if (
-                        ingredientInput.trim() &&
-                        !form.ingredients?.includes(ingredientInput.trim())
-                      ) {
-                        setForm((prev) => ({
-                          ...prev,
-                          ingredients: [...(prev.ingredients || []), ingredientInput.trim()],
-                        }));
-                        setIngredientInput('');
-                        setTouched((prev: Record<string, boolean>) => ({
-                          ...prev,
-                          ingredients: true,
-                        }));
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        if (
+                          ingredientInput.trim() &&
+                          !form.ingredients?.includes(ingredientInput.trim())
+                        ) {
+                          setForm((prev) => ({
+                            ...prev,
+                            ingredients: [...(prev.ingredients ?? []), ingredientInput.trim()],
+                          }));
+                          setIngredientInput('');
+                          setTouched((prev: Record<string, boolean>) => ({
+                            ...prev,
+                            ingredients: true,
+                          }));
+                        }
+                      }}
+                      disabled={
+                        !ingredientInput.trim() ||
+                        (form.ingredients ?? []).includes(ingredientInput.trim())
                       }
-                    }}
-                    disabled={
-                      !ingredientInput.trim() ||
-                      (form.ingredients || []).includes(ingredientInput.trim())
-                    }
-                  >
-                    Add
-                  </Button>
-                </InputAdornment>
-              ),
+                    >
+                      Add
+                    </Button>
+                  </InputAdornment>
+                ),
+              },
             }}
           />
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
-            {(form.ingredients || []).map((ingredient: string, idx: number) => (
+            {(form.ingredients ?? []).map((ingredient: string, idx: number) => (
               <Chip
-                key={ingredient + idx}
+                key={ingredient}
                 label={ingredient}
                 onDelete={() => {
-                  const newIngredients = (form.ingredients || []).filter(
+                  const newIngredients = (form.ingredients ?? []).filter(
                     (_: unknown, i: number) => i !== idx,
                   );
                   setForm((prev) => ({ ...prev, ingredients: newIngredients }));

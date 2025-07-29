@@ -95,9 +95,9 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onEdit, onDelete }) =
             Ingredients:
           </Typography>
           <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
-            {item.ingredients.slice(0, 3).map((ing, idx) => (
+            {item.ingredients.slice(0, 3).map((ing) => (
               <Chip
-                key={ing + idx}
+                key={ing}
                 label={ing}
                 size="small"
                 variant="outlined"

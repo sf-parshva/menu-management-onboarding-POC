@@ -49,19 +49,21 @@ const MenuSearchFilterBar: React.FC<MenuSearchFilterBarProps> = ({
         onChange={(e) => setSearch(e.target.value)}
         size="small"
         fullWidth
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon sx={{ color: 'text.secondary', fontSize: '1.1rem' }} />
-            </InputAdornment>
-          ),
-          endAdornment: search && (
-            <InputAdornment position="end">
-              <IconButton size="small" onClick={clearSearch} sx={{ color: 'text.secondary' }}>
-                <ClearIcon fontSize="small" />
-              </IconButton>
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: 'text.secondary', fontSize: '1.1rem' }} />
+              </InputAdornment>
+            ),
+            endAdornment: search && (
+              <InputAdornment position="end">
+                <IconButton size="small" onClick={clearSearch} sx={{ color: 'text.secondary' }}>
+                  <ClearIcon fontSize="small" />
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
         }}
         sx={{
           '& .MuiOutlinedInput-root': {
